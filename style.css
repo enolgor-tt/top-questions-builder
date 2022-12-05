@@ -1,0 +1,108 @@
+:root {
+  --button: gray;
+  --buton-enabled: 0.5;
+  --button-hover: 1;
+  --button-disabled: lightgray;
+}
+
+main section {
+  margin: 10px 20px 10px 20px;
+}
+
+.question {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
+}
+
+.question > details {
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.action {
+  display: inline-block;
+  width: 22px;
+  height: 26px;
+}
+
+.action > svg {
+  border-style: solid;
+  border-width: thin;
+  color: var(--button);
+  opacity: var(--buton-enabled);
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+.action > svg:hover {
+  opacity: var(--buton-hover);
+}
+
+.action.disabled > svg {
+  background-color: var(--button-disabled);
+  cursor: default;
+}
+
+.action.disabled > svg:hover {
+  opacity: var(--buton-enabled);
+  cursor: default;
+}
+
+.question-actions {
+  margin-bottom: 10px;
+}
+
+.language-form {
+  
+}
+
+.answer {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
+}
+
+.question details form > div {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
+  margin: 5px 20px 5px 20px;
+}
+
+.question details form > div > label {
+  width: 110px;
+}
+
+.answers {
+  padding: 5px 5px 0px 26px;
+}
+
+.answers-block {
+  display: block !important;
+}
+
+.answer-actions {
+  margin-right: 10px;
+}
+
+textarea.invalid {
+  border-color: red;
+}
+
+summary.invalid {
+  color: red;
+}

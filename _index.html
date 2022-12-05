@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Private Pool Top Question Creator</title>
+    <link rel="stylesheet" href="/style.css">
+    <!-- <link rel="icon" href="./favicon.ico" type="image/x-icon"> -->
+    <script src="/lucide.min.js"></script>
+    <script src="/script.js"></script>
+    <script src="/js-yaml.min.js"></script>
+  </head>
+  <body>
+    <main x-data="app()">
+        <h1>Pool Top Questions Builder</h1>
+        <section>
+          <form>
+            <label>Language(s):</label>
+            <select x-on:change="langSelect(0)">
+              <option value="en" selected>en</option>
+              <option value="de">de</option>
+              <option value="fr">fr</option>
+              <option value="nl">nl</option>
+            </select>
+            <select x-on:change="langSelect(1)">
+              <option value="" selected></option>
+              <option value="en">en</option>
+              <option value="de">de</option>
+              <option value="fr">fr</option>
+              <option value="nl">nl</option>
+            </select>
+            <select x-on:change="langSelect(2)">
+              <option value="" selected></option>
+              <option value="en">en</option>
+              <option value="de">de</option>
+              <option value="fr">fr</option>
+              <option value="nl">nl</option>
+            </select>
+            <select x-on:change="langSelect(3)">
+              <option value="" selected></option>
+              <option value="en">en</option>
+              <option value="de">de</option>
+              <option value="fr">fr</option>
+              <option value="nl">nl</option>
+            </select>
+          </form>
+        </section>
+        <section class="questions">
+          <template x-for="(question, questionIdx) in questions" x-effect="lucide.createIcons();">
+            <div class="question" x-effect="lucide.createIcons();">
+              <div class="question-actions">
+                <div class="action" :class="{'disabled': questionIdx === 0}" @click="moveQuestion('up', questionIdx)"><i icon-name="chevron-up"></i></div>
+                <div class="action" :class="{'disabled': questionIdx === questions.length - 1}" @click="moveQuestion('down', questionIdx)"><i icon-name="chevron-down"></i></div>
+                <div class="action" :class="{'disabled': questions.length === 1}" @click="deleteQuestion(questionIdx)"><i icon-name="trash-2"></i></div>
+              </div>
+              <details>
+                <summary :class="{'invalid': !question.isValid(langs())}">Question <span x-text="questionIdx + 1"></span>: <span x-text="question.Question.title"></span></summary>
+                <p>
+                  <form>
+                    <div>
+                      <label>Type: </label>
+                      <select x-model="question.Type">
+                        <option value="RADIO" selected>Single Select</option>
+                        <option value="CHECKBOX">Multi Select</option>
+                        <option value="NUMERIC">Numeric</option>
+                        <option value="TEXT">Text</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label>Validity: </label>
+                      <select>
+                        <option value="6mo" selected>6 months</option>
+                        <option value="12mo">12 months</option>
+                        <option value="24mo">24 months</option>
+                      </select>
+                    </div>
+                    <div class="language-form">
+                      <label>Question: </label>
+                      <textarea x-model="question.Question.textBlock" :class="{'invalid': !question.Question.isValid(langs())}"></textarea>
+                    </div>
+                    <div class="language-form" x-show="question.showPlaceholder()">
+                      <label>Placeholders: </label>
+                      <textarea x-model="question.Placeholder.textBlock" :class="{'invalid': !question.Placeholder.isValid(langs())}"></textarea>
+                    </div>
+                    <div class="language-form" x-show="question.showUncertainty()">
+                      <label>Uncertainties: </label>
+                      <textarea x-model="question.Uncertainty.textBlock" :class="{'invalid': !question.Uncertainty.isValid(langs())}"></textarea>
+                    </div>
+                    <div class="language-form" x-show="question.showUnit()">
+                      <label>Units: </label>
+                      <textarea x-model="question.Unit.textBlock" :class="{'invalid': !question.Unit.isValid(langs())}"></textarea>
+                    </div>
+                    <div class="answers-block" x-show.important="question.showAnswers()">
+                      <label>Answers: </label>
+                        <div class="answers" x-effect="lucide.createIcons();">
+                          <template x-for="(answer, answerIdx) in question.Answers" x-effect="lucide.createIcons();">
+                            <div class="answer" x-effect="lucide.createIcons();">
+                              <div class="answer-actions">
+                                <div class="action" :class="{'disabled': answerIdx === 0}" @click="moveAnswer('up', questionIdx, answerIdx)"><i icon-name="chevron-up"></i></div>
+                                <div class="action" :class="{'disabled': answerIdx === question.Answers.length - 1}" @click="moveAnswer('down', questionIdx, answerIdx)"><i icon-name="chevron-down"></i></div>
+                                <div class="action" :class="{'disabled': question.Answers.length === 1}" @click="deleteAnswer(questionIdx, answerIdx)"><i icon-name="trash-2"></i></div>
+                              </div>
+                              <div class="language-form">
+                                <textarea x-model="answer.textBlock" :class="{'invalid': !answer.isValid(langs())}"></textarea>
+                              </div>
+                            </div>
+                          </template>
+                        <div class="action" x-on:click="addAnswer(questionIdx)"><i icon-name="plus"></i></div>
+                      </div>
+                    </div>
+                  </form>
+                </p>
+              </details>
+            </div>
+          </template>
+        </section>
+        <section>
+          <div class="action" x-on:click="addQuestion()"><i icon-name="plus"></i></div>
+          <div class="action" x-on:click="download('top-questions.yml')" :class="{'disabled': !isValid()}"><i icon-name="download"></i></div>
+        </section>
+    </main>
+    <script>
+      lucide.createIcons();
+    </script>
+    <script src="/alpine.min.js"></script>
+  </body>
+</html>
